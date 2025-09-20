@@ -1,4 +1,4 @@
-# MERN Blog (Vercel + Render/Railway)
+# MERN Blog 
 
 Full-stack MERN blogging platform with JWT auth, MongoDB Atlas, React + Redux Toolkit, and SCSS. Frontend deploys on Vercel; backend can deploy to Render/Railway (or as Vercel Serverless functions optional).
 
