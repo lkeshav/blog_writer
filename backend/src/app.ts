@@ -7,6 +7,9 @@ import { connectToDatabase } from './config/database.js';
 import authRoutes from './routes/auth.routes.js';
 import blogRoutes from './routes/blog.routes.js';
 import userRoutes from './routes/user.routes.js';
+import likeRoutes from './routes/like.routes.js';
+import bookmarkRoutes from './routes/bookmark.routes.js';
+import commentRoutes from './routes/comment.routes.js';
 
 dotenv.config();
 
@@ -39,6 +42,9 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/likes', likeRoutes);
+app.use('/api/bookmarks', bookmarkRoutes);
+app.use('/api/comments', commentRoutes);
 
 // Initialize DB connection
 connectToDatabase().catch((err) => {

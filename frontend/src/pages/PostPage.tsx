@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../shared/hooks';
 import { deleteBlog, fetchBlog } from '../features/blog/blogSlice';
+import LikeButton from '../components/LikeButton';
+import BookmarkButton from '../components/BookmarkButton';
+import CommentSection from '../components/CommentSection';
 
 export default function PostPage() {
   const { id } = useParams();
@@ -55,12 +58,18 @@ export default function PostPage() {
             {new Date(post.createdAt || '').toLocaleDateString()}
           </span>
         </div>
+        <div className="post__actions">
+          <LikeButton blogId={post._id} likes={post.likes || 0} />
+          <BookmarkButton blogId={post._id} />
+        </div>
         <div className="post__body">
           {post.content.split('\n').map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
         </div>
       </article>
+      
+      <CommentSection blogId={post._id} />
     </div>
   );
 }

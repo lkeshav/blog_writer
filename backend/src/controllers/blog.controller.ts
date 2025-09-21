@@ -60,4 +60,28 @@ export async function deleteBlog(req: AuthRequest, res: Response) {
   }
 }
 
+export async function searchBlogs(req: AuthRequest, res: Response) {
+  try {
+    const { q, tags } = req.query;
+    let query: any = {};
+
+    if (q) {
+      query.$or = [
+        { title: { $regex: q as string, $options: 'i' } },
+        { content: { $regex: q as string, $options: 'i' } }
+      ];
+    }
+
+    if (tags) {
+      const tagArray = Array.isArray(tags) ? tags : [tags];
+      query.tags = { $in: tagArray };
+    }
+
+    const blogs = await Blog.find(query).populate('author', 'name');
+    res.json(blogs);
+  } catch (err) {
+    res.status(500).json({ message: 'Search failed' });
+  }
+}
+
 

@@ -11,6 +11,8 @@ export interface Blog {
   tags?: string[];
   coverImageUrl?: string;
   createdAt?: string;
+  likes?: number;
+  comments?: number;
 }
 
 interface BlogState {
@@ -53,10 +55,32 @@ export const deleteBlog = createAsyncThunk('blog/delete', async (payload: { id: 
   return id;
 });
 
+export const searchBlogs = createAsyncThunk('blog/search', async (payload: { query: string; tags?: string[] }) => {
+  const { query, tags } = payload;
+  const params = new URLSearchParams();
+  if (query) params.append('q', query);
+  if (tags && tags.length > 0) {
+    tags.forEach(tag => params.append('tags', tag));
+  }
+  const { data } = await axios.get(`${API}/blogs/search?${params.toString()}`);
+  return data as Blog[];
+});
+
 const blogSlice = createSlice({
   name: 'blog',
   initialState,
-  reducers: {},
+  reducers: {
+    updateBlogLikes: (state, action) => {
+      const { blogId, likes } = action.payload;
+      const blog = state.items.find(b => b._id === blogId);
+      if (blog) {
+        blog.likes = likes;
+      }
+      if (state.selected && state.selected._id === blogId) {
+        state.selected.likes = likes;
+      }
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBlogs.pending, (state) => { state.status = 'loading'; })
@@ -73,10 +97,15 @@ const blogSlice = createSlice({
       .addCase(deleteBlog.fulfilled, (state, action) => {
         state.items = state.items.filter(b => b._id !== action.payload);
         if (state.selected?._id === action.payload) state.selected = null;
+      })
+      .addCase(searchBlogs.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.status = 'idle';
       });
   }
 });
 
+export const { updateBlogLikes } = blogSlice.actions;
 export default blogSlice.reducer;
 
 

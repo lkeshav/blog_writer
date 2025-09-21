@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../shared/hooks';
 import { fetchBlogs } from '../features/blog/blogSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import SearchBar from '../components/SearchBar';
+import LikeButton from '../components/LikeButton';
+import BookmarkButton from '../components/BookmarkButton';
 
 export default function FeedPage() {
   const dispatch = useAppDispatch();
@@ -15,11 +18,14 @@ export default function FeedPage() {
     <div className="feed">
       <header className="feed__header">
         <h1>Blog Feed</h1>
-        {user && (
-          <button onClick={() => navigate('/editor')} className="btn btn--primary">
-            ✍️ Write a Post
-          </button>
-        )}
+        <div className="feed__header-right">
+          <SearchBar />
+          {user && (
+            <button onClick={() => navigate('/editor')} className="btn btn--primary">
+              ✍️ Write a Post
+            </button>
+          )}
+        </div>
       </header>
       
       <div className="feed__content">
@@ -53,6 +59,11 @@ export default function FeedPage() {
                     <span className="date">
                       {new Date(blog.createdAt || '').toLocaleDateString()}
                     </span>
+                  </div>
+                  <div className="post-card__actions">
+                    <LikeButton blogId={blog._id} likes={blog.likes || 0} />
+                    <BookmarkButton blogId={blog._id} />
+                    <span className="comment-count">💬 {blog.comments || 0}</span>
                   </div>
                 </div>
               </article>

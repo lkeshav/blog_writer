@@ -3,10 +3,41 @@ $accent2: #06b6d4;
 $ink: #0f172a;
 $muted: #475569;
 
-.auth-screen { background: #f8fafc; min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
+.auth-screen { 
+  background: #f8fafc; 
+  min-height: 100vh; 
+  display: grid; 
+  place-items: center; 
+  padding: 1rem; 
+}
 
-.auth-split { display: grid; gap: 2rem; align-items: center; }
-@media (min-width: 1024px) { .auth-split { grid-template-columns: 520px minmax(320px, 420px); } }
+@media (max-width: 480px) {
+  .auth-screen {
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+}
+
+.auth-split { 
+  display: grid; 
+  gap: 2rem; 
+  align-items: center; 
+  width: 100%;
+  max-width: 1200px;
+}
+
+@media (min-width: 1024px) { 
+  .auth-split { 
+    grid-template-columns: 520px minmax(320px, 420px); 
+  } 
+}
+
+@media (max-width: 1023px) {
+  .auth-split__image {
+    display: none;
+  }
+}
 
 .auth-split__image { position: relative; height: 420px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(2,6,23,.15); }
 @media (min-width: 1024px) { .auth-split__image { height: 640px; } }
@@ -15,8 +46,29 @@ $muted: #475569;
 .auth-split__image .overlay__title { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700; }
 .auth-split__image .overlay__subtitle { opacity: .85; }
 
-.auth-card { background: #fff; border-radius: 16px; padding: 1.25rem; box-shadow: 0 20px 40px rgba(2,6,23,.08); }
-@media (min-width: 480px) { .auth-card { padding: 1.5rem; } }
+.auth-card { 
+  background: #fff; 
+  border-radius: 16px; 
+  padding: 1.25rem; 
+  box-shadow: 0 20px 40px rgba(2,6,23,.08); 
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+@media (min-width: 480px) { 
+  .auth-card { 
+    padding: 1.5rem; 
+  } 
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(2,6,23,.1);
+  }
+}
 .auth-card__brand { display: flex; align-items: center; gap: .6rem; justify-content: center; margin-bottom: 1rem; }
 .auth-card__brand .logo { height: 40px; width: 40px; border-radius: 999px; background: linear-gradient(135deg, $accent, $accent2); display: grid; place-items: center; color: white; }
 .auth-card__brand .name { font-weight: 700; color: $ink; }
